@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  # Database MongoDB
+  mongodb:
+    image: mongo:6.0
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password_rahasia
+    volumes:
+      - mongo_data:/data/db
+
+  # Admin Dashboard (Next.js)
+  admin-dashboard:
+    build:
+      context: .
+      dockerfile: ./enatega-multivendor-admin/Dockerfile
+    restart: always
+    environment:
+      - PORT=3000
+    expose:
+      - "3000"
+
+  # Customer Web (React)
+  customer-web:
+    build:
+      context: .
+      dockerfile: ./enatega-multivendor-web/Dockerfile
+    restart: always
+    environment:
+      - PORT=3000
+    expose:
+      - "3000"
+
+volumes:
+  mongo_data:
